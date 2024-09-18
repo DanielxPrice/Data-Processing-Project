@@ -6,8 +6,4 @@ file, processes the data, removes excess space and
 comments from the code, tokenizes the remaining code,
 and prints the output in a tabular form.
  
-Group Members:
-
-Product Owner/Developer: Daniel Price [-]
-Scrum Master/Developer: [-]
-Developer: 
+Developer: Daniel Price
