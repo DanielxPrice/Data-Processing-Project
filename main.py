@@ -20,10 +20,11 @@ tabular form.
 
 import sys
 
-keywords = ["False", "None", "True", "and", "as", "assert", "break", "class", "continue",
-    "def", "del", "elif", "else", "except", "finally", "for", "from", "global",
-    "if", "import", "in", "is", "lambda", "match", "metaclass", "nonlocal",
-    "not", "or", "pass", "raise", "return", "try", "while", "with", "yield"]
+keywords = ["yield", "with", "while", "try", "return", "raise", "pass", "or", "not",
+    "nonlocal", "metaclass", "match", "lambda", "is", "print", "in", "if",
+    "import", "global", "for", "from", "finally", "except", "else", "elif",
+    "del", "def", "continue", "class", "break", "assert", "as", "and",
+    "True", "False", "None"]
 
 operators = ['+', '-', '*', '/', '//', '%', '**', '==', '!=', '>', '<', '>=', '<=',
     'and', 'or', 'not', '=', '+=', '-=', '*=', '/=', '//=', '%=', '**=',
@@ -33,14 +34,17 @@ operators = ['+', '-', '*', '/', '//', '%', '**', '==', '!=', '>', '<', '>=', '<
 separators = [',', ';', ':', '(', ')', '[', ']', '{', '}']
 
 def readFile(filename):
+    linesList = []
     try:
         with open(filename, 'r') as file:
-            lines = file.readlines()
-            #print(lines)
-            return lines
+            line = file.readline()
+            while line:
+                linesList.append(line.strip())
+                line = file.readline()
     except FileNotFoundError:
         print("Error: File Not Found!")
         sys.exit(1)
+    return linesList
 
 def keywordCounter(line):
     keywordCount = {}
@@ -90,14 +94,22 @@ def separatorCounter(line):
 
 def main():
     filename = "parseCode.txt"
-    file = readFile(filename)
+    fileList = readFile(filename)
+    print(f"test: {fileList}")
 
+    # Take out all comments
     strippedFile = []
-    for line in file:
+    for line in fileList:
         line = line.strip()
         if "#" not in line:
             strippedFile.append(line)
 
+    # Print out stripped code
+    print("Requirement for Assignment:")
+    for line in strippedFile:
+        print(line)
+
+    # Turn list into string
     condensedFile = ""
     for line in strippedFile:
         condensedFile += " "
@@ -144,7 +156,7 @@ def main():
             tempString += char
 
     condensedFile = tempString
-    print(condensedFile)
+    print(f"condensedFile: {condensedFile}")
 
     '''
     KEYWORD SECTION
@@ -188,6 +200,9 @@ def main():
 
 
     # Print Identifiers, do identifiers last. This is beacuse you will turn string into list and it is cake from there
+    '''
+    IDENTIFIERS SECTION
+    '''
 
 
 
