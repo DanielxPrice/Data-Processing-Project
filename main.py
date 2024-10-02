@@ -19,7 +19,47 @@ tabular form.
 '''
 
 import sys
+'''
+CREATIVITY
+'''
 import pygame
+import math
+
+pygame.init()
+clock = pygame.time.Clock()
+
+# Screen dimensions
+SCREEN_WIDTH = 950
+SCREEN_HEIGHT = 1000
+SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self, image):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.transform.scale(image, (200, 200))
+        self.rect = self.image.get_rect()
+        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)  # Start in the center
+        self.angle = 0  # Initialize angle for circular movement
+        self.radius = 280  # Radius of the circle
+    def update(self):
+        self.angle += 1
+        if self.angle >= 360:
+            self.angle -= 360
+
+        # Calculate the new position using circular motion equations
+        self.rect.centerx = SCREEN_WIDTH // 2 + int(self.radius * math.cos(math.radians(self.angle)))
+        self.rect.centery = SCREEN_HEIGHT // 2 + int(self.radius * math.sin(math.radians(self.angle)))
+
+def draw_text(color, text, font, size, x, y, surface):
+    font_name = pygame.font.match_font(font)
+    Font = pygame.font.Font(font_name, size)
+    text_surface = Font.render(text, True, color)
+    text_rect = text_surface.get_rect()
+    text_rect.center = (x, y)
+    surface.blit(text_surface, text_rect)
+'''
+END OF CREATIVITY ADDITION
+'''
 
 keywords = ["yield", "with", "while", "try", "return", "raise", "pass", "or", "not",
     "nonlocal", "metaclass", "match", "lambda", "is", "print", "in", "if",
@@ -225,6 +265,49 @@ def main():
     identifiersList = [item for item in fileList if not item.isdigit()]
     print(f"IDENTIFIERS, Total({len(identifiersList)}): {identifiersList}")
 
+'''
+CREATIVITY TIME :D
+'''
+player_img = pygame.image.load('IBA04140.jpeg')
+player = Player(player_img)
 
-if __name__ == "__main__":
-    main()
+# Main game loop
+running = True
+mainCalled = False
+while running:
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Call the main function to process data
+    if not mainCalled:
+        main()
+        mainCalled = True
+
+    # Update the player
+    player.update()
+
+    # Clear the screen
+    SCREEN.fill((48, 174, 199))
+
+    # Draw the player
+    SCREEN.blit(player.image, player.rect)
+
+    # Draw some text
+    draw_text((36, 61, 182), 'Hello, my name is Daniel :D', 'arial', 24, SCREEN_WIDTH // 2, 30, SCREEN)
+
+    # Update the display
+    pygame.display.flip()
+
+    # Limit the frame rate
+    clock.tick(60)
+
+# Clean up
+
+'''
+END OF ADDITIONS
+'''
+
+# if __name__ == "__main__":
+#     main()
