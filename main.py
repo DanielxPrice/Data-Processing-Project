@@ -56,9 +56,8 @@ def keywordCounter(line):
     # Remove from the list
     for keyword in keywords:
         keywordCount[keyword] = line.count(keyword)
-
-    for keyword in keywords:
         line = line.replace(keyword, "")
+
 
     return keywordCount, line
 
@@ -86,7 +85,7 @@ def separatorCounter(line):
     for separator in separators:
         separatorCount[separator] = line.count(separator)
 
-    # Remove from the lsit
+    # Remove from the list
     for separator in separators:
         line = line.replace(separator, " ")
 
@@ -95,7 +94,7 @@ def separatorCounter(line):
 def main():
     filename = "parseCode.txt"
     fileList = readFile(filename)
-    print(f"test: {fileList}")
+    #print(f"test: {fileList}") # TEST LINE
 
     # Take out all comments
     strippedFile = []
@@ -105,7 +104,7 @@ def main():
             strippedFile.append(line)
 
     # Print out stripped code
-    print("Requirement for Assignment:")
+    print("Output 1 (Removing excess space and comments):\n")
     for line in strippedFile:
         print(line)
 
@@ -115,8 +114,10 @@ def main():
         condensedFile += " "
         condensedFile += line
     condensedFile = condensedFile.strip()
-    print(condensedFile)
+    #print(f"condensed file: {condensedFile}") # TEST LINE
 
+
+    print("\n\nOutput 2 (Tokenized code in tabular form):\n")
     '''
     LITERAL STRING SECTION
     '''
@@ -146,7 +147,8 @@ def main():
     if inQuotes:
         tempString2 += '"'
         literalList.append(tempString2)
-    print(literalList)
+    # print(f"\nLITERALS, Total({len(literalList)}): {literalList}") # Will print later on with the digits
+
 
     inQuotes = False
     for char in condensedFile:
@@ -156,55 +158,72 @@ def main():
             tempString += char
 
     condensedFile = tempString
-    print(f"condensedFile: {condensedFile}")
+    # print(f"condensedFile: {condensedFile}") # TEST LINE
 
     '''
     KEYWORD SECTION
-    *** SECTION NEED FIXIN'
-    *** MAYBE PUT STRING INTO LIST NOW THEN TAKE OUT KEYWORDS b/c KEYWORD DONT TOUCH OTHER LETTER NOT IN THE KEYWORD
-    (THIS WOULD FIX THE IN TAKING FROM  PRINT) THEN AFTER DONE WITH LIST, CHANGE BACK INTO STRING?
     '''
     # Print out all keywords, need to fix "in" because it is taking from "__main__" and "print"
+    keywordsList = []
+    keywordsCount = 0
     keywordCount, condensedFile = keywordCounter(condensedFile)
     for keyword, count in keywordCount.items():
         if count > 0:
-            print(f"{keyword}: {count}")
+            for i in range(count):
+                keywordsList.append(keyword)
+            keywordsCount += count
+            # print(f"{keyword}: {count}") # TEST LINE
+    print(f"KEYWORDS, Total({keywordsCount}): {keywordsList}")
 
     '''
     OPERATOR SECTION
     '''
     # Print out all operators
+    operatorsList = []
+    operatorsCount = 0
     operatorCount, condensedFile = operatorCounter(condensedFile)
     for operator, count in operatorCount.items():
         if count > 0:
-            print(f"{operator}: {count}")
+            for i in range(count):
+                operatorsList.append(operator)
+            operatorsCount += count
+            # print(f"{operator}: {count}") # TEST LINE
+    print(f"OPERATORS, Total({operatorsCount}): {operatorsList}")
 
     '''
     SEPARATOR SECTION
     '''
     # Print out all Separators, excludes " and ' to be added late so that we know what is a literal and what is not
+    separatorsList = []
+    separatorsCount = 0
     separatorCount, condensedFile = separatorCounter(condensedFile)
     for separator, count in separatorCount.items():
         if count > 0:
-            print(f"{separator}: {count}")
+            for i in range(count):
+                separatorsList.append(separator)
+            separatorsCount += count
+            # print(f"{separator}: {count}") # TEST LINE
+    print(f"SEPARATORS, Total({separatorsCount}): {separatorsList}")
 
     condensedFile = condensedFile.strip()
-    print(condensedFile)
+    # print(condensedFile)  # TEST LINE
 
     fileList = condensedFile.split()
-    print(fileList)
+    # print(fileList)  # TEST LINE
 
     '''
     LITERAL NUMBER SECTION
     '''
-
+    digitLiterals = [item for item in fileList if item.isdigit()]
+    print(f"LITERALS, Total({len(literalList) + len(digitLiterals)}): {literalList}{digitLiterals}")
 
     # Print Identifiers, do identifiers last. This is beacuse you will turn string into list and it is cake from there
     '''
     IDENTIFIERS SECTION
     '''
+    identifiersList = [item for item in fileList if not item.isdigit()]
+    print(f"IDENTIFIERS, Total({len(identifiersList)}): {identifiersList}")
 
 
-
-
-main()
+if __name__ == "__main__":
+    main()
