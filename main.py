@@ -19,6 +19,7 @@ tabular form.
 '''
 
 import sys
+import pygame
 
 keywords = ["yield", "with", "while", "try", "return", "raise", "pass", "or", "not",
     "nonlocal", "metaclass", "match", "lambda", "is", "print", "in", "if",
