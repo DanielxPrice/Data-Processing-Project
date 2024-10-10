@@ -133,7 +133,7 @@ def separatorCounter(line):
     return separatorCount, line
 
 def main():
-    filename = "parseCode.txt"
+    filename = "parseCode2.txt"
     fileList = readFile(filename)
     #print(f"test: {fileList}") # TEST LINE
 
@@ -150,9 +150,29 @@ def main():
                 commentList.append("#" + comment)
             else:
                 strippedFile.append(line)  # Add line to strippedFile if no comment
-    print(f"COMMENTLIST: {commentList}")
+    # print(f"COMMENTLIST: {commentList}") # TEST LINE
     strippedFile = [line for line in strippedFile if line]
 
+    # Accounting for triple quote comments
+    flag = False
+    tripleQuoteComment = ""
+    for line in strippedFile[:]:
+        if '"""' in line or "'''" in line:
+            if line.count('"""') == 2 or line.count("'''") == 2:
+                flag = False
+                tripleQuoteComment += line
+                strippedFile.remove(line)
+            else:
+                flag = not flag
+                tripleQuoteComment += line
+                strippedFile.remove(line)
+                if not flag:
+                    # print(f"Tripe quote comment:  {tripleQuoteComment}") # TEST OUTPUT
+                    commentList.append(tripleQuoteComment)
+                    tripleQuoteComment = ""
+        elif flag:
+            tripleQuoteComment += line
+            strippedFile.remove(line)
 
     # Print out stripped code
     print("Output 1 (Removing excess space and comments):\n")
