@@ -61,11 +61,11 @@ def draw_text(color, text, font, size, x, y, surface):
 END OF CREATIVITY ADDITION
 '''
 
-keywords = ["yield", "with", "while", "try", "return", "raise", "pass", "or", "not",
+keywords = ["yield", "with", "while", "try", "return", "raise", "pass", "not",
     "nonlocal", "metaclass", "match", "lambda", "is", "print", "in", "if",
-    "import", "global", "for", "from", "finally", "except", "else", "elif",
+    "import", "global", "for", "or", "from", "finally", "except", "else", "elif",
     "del", "def", "continue", "class", "break", "assert", "as", "and",
-    "True", "False", "None"]
+    "True", "False", "None", "range"]
 
 operators = ['+', '-', '*', '/', '//', '%', '**', '==', '!=', '>', '<', '>=', '<=',
     'and', 'or', 'not', '=', '+=', '-=', '*=', '/=', '//=', '%=', '**=',
@@ -139,10 +139,20 @@ def main():
 
     # Take out all comments
     strippedFile = []
+    commentList = []
     for line in fileList:
         line = line.strip()
-        if "#" not in line:
-            strippedFile.append(line)
+        if line:
+            if "#" in line:
+                # Split the line at the first '#' found
+                code, comment = line.split("#", 1)
+                strippedFile.append(code.strip())
+                commentList.append("#" + comment)
+            else:
+                strippedFile.append(line)  # Add line to strippedFile if no comment
+    print(f"COMMENTLIST: {commentList}")
+    strippedFile = [line for line in strippedFile if line]
+
 
     # Print out stripped code
     print("Output 1 (Removing excess space and comments):\n")
