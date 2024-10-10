@@ -288,12 +288,18 @@ def main():
     digitLiterals = [item for item in fileList if item.isdigit()]
     print(f"LITERALS, Total({len(literalList) + len(digitLiterals)}): {literalList}{digitLiterals}")
 
-    # Print Identifiers, do identifiers last. This is beacuse you will turn string into list and it is cake from there
     '''
     IDENTIFIERS SECTION
     '''
     identifiersList = [item for item in fileList if not item.isdigit()]
     print(f"IDENTIFIERS, Total({len(identifiersList)}): {identifiersList}")
+
+    # Print out the comments
+    print(f"COMMENTS, Total({len(commentList)}): {commentList}")
+
+    # Print out total tokens
+    print(
+        f"TOTAL TOKENS (exculding comments): {len(identifiersList) + len(keywordsList) + len(separatorsList) + len(operatorsList) + len(literalList) + len(digitLiterals)}")
 
 '''
 CREATIVITY TIME :D
