@@ -133,7 +133,7 @@ def separatorCounter(line):
     return separatorCount, line
 
 def main():
-    filename = "parseCode2.txt"
+    filename = "parseCode3.txt"
     fileList = readFile(filename)
     #print(f"test: {fileList}") # TEST LINE
 
