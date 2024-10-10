@@ -97,7 +97,7 @@ def main():
     #print(f"test: {fileList}") # TEST LINE
 
     # Take out all comments
-    # ALSO ADJUSTING SO THAT IT ACCOUNST FOR COMMENTS AFTER CODE
+    # ALSO ADJUSTING SO THAT IT ACCOUNT FOR COMMENTS AFTER CODE
     strippedFile = []
     commentList = []
     for line in fileList:
@@ -112,6 +112,27 @@ def main():
                 strippedFile.append(line)  # Add line to strippedFile if no comment
     print(f"COMMENTLIST: {commentList}")
     strippedFile = [line for line in strippedFile if line]
+
+    # Accounting for triple quote comments
+    flag = False
+    tripleQuoteComment = ""
+    for line in strippedFile[:]:
+        if '"""' in line or "'''" in line:
+            if line.count('"""') == 2 or line.count("'''") == 2:
+                flag = False
+                tripleQuoteComment += line
+                strippedFile.remove(line)
+            else:
+                flag = not flag
+                tripleQuoteComment += line
+                strippedFile.remove(line)
+                if not flag:
+                    # print(f"Tripe quote comment:  {tripleQuoteComment}") # TEST OUTPUT
+                    commentList.append(tripleQuoteComment)
+                    tripleQuoteComment = ""
+        elif flag:
+            tripleQuoteComment += line
+            strippedFile.remove(line)
 
     # Print out stripped code
     print("Output 1 (Removing excess space and comments):\n")
