@@ -92,7 +92,7 @@ def separatorCounter(line):
     return separatorCount, line
 
 def main():
-    filename = "parseCode3.txt"
+    filename = ("parseCode2.txt")
     fileList = readFile(filename)
     #print(f"test: {fileList}") # TEST LINE
 
@@ -110,7 +110,7 @@ def main():
                 commentList.append("#" + comment)
             else:
                 strippedFile.append(line)  # Add line to strippedFile if no comment
-    print(f"COMMENTLIST: {commentList}")
+    # print(f"COMMENTLIST: {commentList}") Test Line
     strippedFile = [line for line in strippedFile if line]
 
     # Accounting for triple quote comments
@@ -255,6 +255,11 @@ def main():
     identifiersList = [item for item in fileList if not item.isdigit()]
     print(f"IDENTIFIERS, Total({len(identifiersList)}): {identifiersList}")
 
+    # Print out the comments
+    print(f"COMMENTS, Total({len(commentList)}): {commentList}")
+
+    # Print out total tokens
+    print(f"TOTAL TOKENS (exculding comments): {len(identifiersList) + len(keywordsList) + len(separatorsList) + len(operatorsList) + len(literalList) + len(digitLiterals)}")
 
 if __name__ == "__main__":
     main()
